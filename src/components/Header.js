@@ -14,10 +14,10 @@ function Header() {
           <Navbar.Collapse id='basic-navbar-nav'>
             <Nav className='mr-auto'>
               <LinkContainer to='/recipes'>
-                <Nav.Link>Przepisy</Nav.Link>
+                <Nav.Link>Recipes</Nav.Link>
               </LinkContainer>
               <LinkContainer to='/ingredients'>
-                <Nav.Link>Składniki</Nav.Link>
+                <Nav.Link>Ingredients</Nav.Link>
               </LinkContainer>
             </Nav>
           </Navbar.Collapse>

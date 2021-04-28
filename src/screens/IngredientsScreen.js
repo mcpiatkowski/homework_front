@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import axios from "axios";
 
 function HomeScreen() {
   const [ingredients, setIngredients] = useState([]);
+  const token = JSON.parse(localStorage.getItem("data"));
 
   useEffect(() => {
     async function fetchProducts() {
-      const { data } = await axios.get("/api/ingredients/");
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${token["access"]}`,
+        },
+      };
+
+      const { data } = await axios.get("/api/ingredients/", config);
       setIngredients(data);
     }
     fetchProducts();
@@ -16,13 +24,22 @@ function HomeScreen() {
   return (
     <div>
       <h1>Ingredients</h1>
-      <Row>
-        {ingredients.map((ingredient) => (
-          <Col key={ingredient.id}>
-            <h3>{ingredient.name}</h3>
-          </Col>
-        ))}
-      </Row>
+      <Table striped bordered hover responsive className='my-3'>
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>name</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ingredients.map((ingredient) => (
+            <tr key={ingredient.id}>
+              <th>{ingredient.id}</th>
+              <th>{ingredient.name}</th>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </div>
   );
 }

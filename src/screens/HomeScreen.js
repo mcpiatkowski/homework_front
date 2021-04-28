@@ -3,14 +3,12 @@ import { Form, Button, Row, Col } from "react-bootstrap";
 import axios from "axios";
 
 function HomeScreen() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
 
-  const username = "chef";
-  const passwordHard = "chef1234";
-
-  useEffect(() => {
+  const submitHandler = (e) => {
+    e.preventDefault();
     async function fetchToken() {
       const config = {
         headers: {
@@ -20,32 +18,26 @@ function HomeScreen() {
 
       const { data } = await axios.post(
         "api/token/",
-        { username: username, password: passwordHard },
+        { username: username, password: password },
         config
       );
 
       setToken(data);
-      localStorage.setItem("accessToken", JSON.stringify(token));
       localStorage.setItem("data", JSON.stringify(data));
     }
     fetchToken();
-  }, []);
-
-  const submitHandler = (e) => {
-    e.preventDefault();
-    console.log("submitted");
   };
   return (
     <div>
       <h1>Welcome!</h1>
       <Form onSubmit={submitHandler}>
-        <Form.Group controlId='email'>
-          <Form.Label>Email Address</Form.Label>
+        <Form.Group controlId='username'>
+          <Form.Label>Username</Form.Label>
           <Form.Control
-            type='email'
-            placeholder='Twój e-mail'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type='name'
+            placeholder='Your username'
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           ></Form.Control>
         </Form.Group>
 
@@ -63,8 +55,12 @@ function HomeScreen() {
           Zaloguj się
         </Button>
       </Form>
-      <Row className='py-3'>Access token: {token.access}</Row>
-      <Row className='py-3'>Refresh token: {token.refresh}</Row>
+      <Row className='text-center'>
+        <Col>Username: Chef</Col>
+      </Row>
+      <Row className='text-center'>
+        <Col>Password: chef1234</Col>
+      </Row>
     </div>
   );
 }

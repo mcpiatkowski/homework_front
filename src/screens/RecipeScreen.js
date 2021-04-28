@@ -1,38 +1,55 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import axios from "axios";
 
 function HomeScreen() {
   const [recipes, setRecipes] = useState([]);
+  const [error, setError] = useState("");
   const token = JSON.parse(localStorage.getItem("data"));
-  console.log("Refresh:", token["refresh"]);
-  console.log("Access:", token["access"]);
 
   useEffect(() => {
-    async function fetchProducts() {
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${token["access"]}`,
-        },
-      };
+    try {
+      async function fetchProducts() {
+        const config = {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${token["access"]}`,
+          },
+        };
 
-      const { data } = await axios.get("/api/recipes/", config);
-      setRecipes(data);
+        const { data } = await axios.get("/api/recipes/", config);
+        setRecipes(data);
+      }
+      fetchProducts();
+    } catch (err) {
+      setError(err.message);
+      console.log(err.message);
     }
-    fetchProducts();
   }, []);
 
   return (
     <div>
       <h1>Recipes</h1>
-      <Row>
-        {recipes.map((recipe) => (
-          <Col key={recipe.id}>
-            <h3>{recipe.name}</h3>
-          </Col>
-        ))}
-      </Row>
+
+      <Table striped bordered hover responsive className='my-3'>
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {recipes.map((recipe) => (
+            <tr key={recipe.id}>
+              <td>{recipe.id}</td>
+              <td>{recipe.name}</td>
+              <td>super przepis</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+      {error}
     </div>
   );
 }
