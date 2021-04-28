@@ -73,7 +73,6 @@ function HomeScreen() {
           ))}
         </tbody>
       </Table>
-      {error}
       <p>Refresh: {refreshToken}</p>
 
       <p>Access: {accessToken}</p>

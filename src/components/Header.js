@@ -1,12 +1,22 @@
 import React from "react";
-import { Navbar, Nav, Container } from "react-bootstrap";
+import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
 function Header() {
+  const logoutHandler = () => {
+    localStorage.removeItem("refresh");
+    localStorage.removeItem("access");
+  };
+
   return (
     <header>
       <Navbar bg='light' expand='lg' collapseOnSelect>
         <Container>
+          <LinkContainer className='mx-3' to='/ingredients'>
+            <Button variant='info' className='btn-sm' onClick={logoutHandler}>
+              Logout
+            </Button>
+          </LinkContainer>
           <LinkContainer to='/'>
             <Navbar.Brand>Cook Book</Navbar.Brand>
           </LinkContainer>
