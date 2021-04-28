@@ -4,6 +4,9 @@ import axios from "axios";
 
 function HomeScreen() {
   const [recipes, setRecipes] = useState([]);
+  const token = JSON.parse(localStorage.getItem("data"));
+  console.log("Refresh:", token["refresh"]);
+  console.log("Access:", token["access"]);
 
   useEffect(() => {
     async function fetchProducts() {
