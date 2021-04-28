@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, Row, Container } from "react-bootstrap";
+import { Table, Container } from "react-bootstrap";
 import axios from "axios";
 
 function RecipeDetailsScreen({ match }) {

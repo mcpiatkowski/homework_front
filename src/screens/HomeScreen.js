@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import axios from "axios";
 
@@ -56,7 +56,7 @@ function HomeScreen() {
         </Button>
       </Form>
       <Row className='text-center'>
-        <Col>Username: Chef</Col>
+        <Col>Username: chef</Col>
       </Row>
       <Row className='text-center'>
         <Col>Password: chef1234</Col>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Table } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import axios from "axios";
 
@@ -9,25 +8,24 @@ function HomeScreen() {
   const [error, setError] = useState("");
   const token = JSON.parse(localStorage.getItem("data"));
 
-  useEffect(() => {
-    try {
-      async function fetchProducts() {
-        const config = {
-          headers: {
-            "Content-type": "application/json",
-            Authorization: `Bearer ${token["access"]}`,
-          },
-        };
+  async function fetchProducts() {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token["access"]}`,
+      },
+    };
 
-        const { data } = await axios.get("/api/recipes/", config);
-        setRecipes(data);
-      }
-      fetchProducts();
-    } catch (err) {
+    const { data } = await axios.get("/api/recipes/", config);
+    setRecipes(data);
+  }
+
+  useEffect(() => {
+    fetchProducts().catch((err) => {
       setError(err.message);
-      console.log(err);
-    }
-  }, []);
+      console.log(error);
+    });
+  }, [fetchProducts, error]);
 
   return (
     <div>
