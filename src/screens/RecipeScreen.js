@@ -10,7 +10,14 @@ function HomeScreen() {
 
   useEffect(() => {
     async function fetchProducts() {
-      const { data } = await axios.get("/api/recipes/");
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${token["access"]}`,
+        },
+      };
+
+      const { data } = await axios.get("/api/recipes/", config);
       setRecipes(data);
     }
     fetchProducts();
