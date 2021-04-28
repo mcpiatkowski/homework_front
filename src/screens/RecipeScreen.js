@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Table } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { LinkContainer } from "react-router-bootstrap";
 import axios from "axios";
 
 function HomeScreen() {
@@ -23,7 +25,7 @@ function HomeScreen() {
       fetchProducts();
     } catch (err) {
       setError(err.message);
-      console.log(err.message);
+      console.log(err);
     }
   }, []);
 
@@ -41,11 +43,13 @@ function HomeScreen() {
         </thead>
         <tbody>
           {recipes.map((recipe) => (
-            <tr key={recipe.id}>
-              <td>{recipe.id}</td>
-              <td>{recipe.name}</td>
-              <td>super przepis</td>
-            </tr>
+            <LinkContainer key={recipe.id} to={`/recipe/${recipe.id}`}>
+              <tr>
+                <td>{recipe.id}</td>
+                <td>{recipe.name}</td>
+                <td>super przepis</td>
+              </tr>
+            </LinkContainer>
           ))}
         </tbody>
       </Table>
