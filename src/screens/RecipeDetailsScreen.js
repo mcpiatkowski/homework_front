@@ -3,30 +3,55 @@ import { Table, Container } from "react-bootstrap";
 import axios from "axios";
 
 function RecipeDetailsScreen({ match }) {
-  const [recipe, setRecipe] = useState([]);
+  const [recipe, setRecipe] = useState();
+  const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-  const token = JSON.parse(localStorage.getItem("data"));
+  const refreshToken = JSON.parse(localStorage.getItem("refresh"));
+  const accessToken = JSON.parse(localStorage.getItem("access"));
+
+  async function fetchRecipe() {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/recipe/${match.params.id}`, config);
+    setRecipe(data);
+    setSuccess(true);
+  }
+
+  async function fetchRefresh() {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.post(
+      "/api/token/refresh/",
+      { refresh: refreshToken },
+      config
+    );
+    localStorage.setItem("access", JSON.stringify(data["access"]));
+    setError("");
+  }
 
   useEffect(() => {
-    async function fetchProducts() {
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${token["access"]}`,
-        },
-      };
-
-      const { data } = await axios.get(`/api/recipe/${match.params.id}`, config);
-      setRecipe(data);
-      setSuccess(true);
+    if (error) {
+      fetchRefresh();
+    } else {
+      fetchRecipe().catch((err) => {
+        setError(err);
+      });
     }
-    fetchProducts();
-  }, [match]);
+  }, [match, error, setError]);
 
   return (
     <div>
       <h1>RecipeDetailsScreen</h1>
-      {success ? (
+      {success && (
         <Container>
           <h1>{recipe.name}</h1>
           <Table striped bordered hover responsive className='my-3'>
@@ -44,8 +69,6 @@ function RecipeDetailsScreen({ match }) {
             </tbody>
           </Table>
         </Container>
-      ) : (
-        "refresh"
       )}
     </div>
   );

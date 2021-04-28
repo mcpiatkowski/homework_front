@@ -4,22 +4,50 @@ import axios from "axios";
 
 function HomeScreen() {
   const [ingredients, setIngredients] = useState([]);
-  const token = JSON.parse(localStorage.getItem("data"));
+  const [error, setError] = useState("");
+  const refreshToken = JSON.parse(localStorage.getItem("refresh"));
+  const accessToken = JSON.parse(localStorage.getItem("access"));
+
+  async function fetchIngredients() {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    };
+
+    const { data } = await axios.get("/api/ingredients/", config);
+    setIngredients(data);
+    setError("");
+  }
+
+  async function fetchRefresh() {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.post(
+      "/api/token/refresh/",
+      { refresh: refreshToken },
+      config
+    );
+    localStorage.setItem("access", JSON.stringify(data["access"]));
+    setError("");
+  }
 
   useEffect(() => {
-    async function fetchProducts() {
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${token["access"]}`,
-        },
-      };
-
-      const { data } = await axios.get("/api/ingredients/", config);
-      setIngredients(data);
+    if (error) {
+      fetchRefresh().catch((err) => {
+        console.log(err.message);
+      });
     }
-    fetchProducts();
-  }, []);
+
+    fetchIngredients().catch((err) => {
+      setError(err.response.status);
+    });
+  }, [error]);
 
   return (
     <div>

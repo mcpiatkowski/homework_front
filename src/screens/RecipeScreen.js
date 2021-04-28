@@ -6,31 +6,53 @@ import axios from "axios";
 function HomeScreen() {
   const [recipes, setRecipes] = useState([]);
   const [error, setError] = useState("");
-  const token = JSON.parse(localStorage.getItem("data"));
+  const refreshToken = JSON.parse(localStorage.getItem("refresh"));
+  const accessToken = JSON.parse(localStorage.getItem("access"));
 
-  async function fetchProducts() {
+  async function fetchRecipes() {
     const config = {
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${token["access"]}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     };
 
     const { data } = await axios.get("/api/recipes/", config);
     setRecipes(data);
+    setError("");
+  }
+
+  async function fetchRefresh() {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.post(
+      "/api/token/refresh/",
+      { refresh: refreshToken },
+      config
+    );
+    localStorage.setItem("access", JSON.stringify(data["access"]));
+    setError("");
   }
 
   useEffect(() => {
-    fetchProducts().catch((err) => {
-      setError(err.message);
-      console.log(error);
+    if (error) {
+      fetchRefresh().catch((err) => {
+        console.log(err.message);
+      });
+    }
+
+    fetchRecipes().catch((err) => {
+      setError(err.response.status);
     });
-  }, [fetchProducts, error]);
+  }, [error]);
 
   return (
     <div>
       <h1>Recipes</h1>
-
       <Table striped bordered hover responsive className='my-3'>
         <thead>
           <tr>
@@ -52,6 +74,9 @@ function HomeScreen() {
         </tbody>
       </Table>
       {error}
+      <p>Refresh: {refreshToken}</p>
+
+      <p>Access: {accessToken}</p>
     </div>
   );
 }

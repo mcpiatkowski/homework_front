@@ -5,7 +5,6 @@ import axios from "axios";
 function HomeScreen() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [token, setToken] = useState("");
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -22,8 +21,8 @@ function HomeScreen() {
         config
       );
 
-      setToken(data);
-      localStorage.setItem("data", JSON.stringify(data));
+      localStorage.setItem("access", JSON.stringify(data["access"]));
+      localStorage.setItem("refresh", JSON.stringify(data["refresh"]));
     }
     fetchToken();
   };
