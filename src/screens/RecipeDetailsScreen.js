@@ -68,9 +68,9 @@ function RecipeDetailsScreen({ match }) {
             <tbody>
               {
                 // @ts-ignore
-                recipe["ingredients"].map((ingredient, index) => (
+                recipe["recipe_ingredients"].map((ingredient, index) => (
                   <tr key={index}>
-                    <td>{ingredient}</td>
+                    <td>{ingredient["name"]}</td>
                   </tr>
                 ))
               }
