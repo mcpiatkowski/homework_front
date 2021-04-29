@@ -79,7 +79,7 @@ function HomeScreen() {
 
       <p>Access: {accessToken}</p>
 
-      <p>Expire: {expireTime} sec. </p>
+      {expireTime ? <p>Expire: {expireTime} sec. </p> : <p>Expire: wait for refresh</p>}
     </div>
   );
 }

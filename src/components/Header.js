@@ -6,6 +6,7 @@ function Header() {
   const logoutHandler = () => {
     localStorage.removeItem("refresh");
     localStorage.removeItem("access");
+    localStorage.removeItem("exp");
   };
 
   return (
