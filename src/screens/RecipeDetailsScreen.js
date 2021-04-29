@@ -35,6 +35,7 @@ function RecipeDetailsScreen({ match }) {
       config
     );
     localStorage.setItem("access", JSON.stringify(data["access"]));
+    localStorage.setItem("exp", JSON.stringify(data["exp"]));
     setError("");
   }
 
@@ -59,6 +60,7 @@ function RecipeDetailsScreen({ match }) {
               recipe.name
             }
           </h1>
+
           <Table striped bordered hover responsive className='my-3'>
             <thead>
               <tr>
@@ -76,6 +78,7 @@ function RecipeDetailsScreen({ match }) {
               }
             </tbody>
           </Table>
+          <h3> {recipe.description} </h3>
         </Container>
       )}
     </div>

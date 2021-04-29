@@ -34,6 +34,7 @@ function HomeScreen() {
       config
     );
     localStorage.setItem("access", JSON.stringify(data["access"]));
+    localStorage.setItem("exp", JSON.stringify(data["exp"]));
     setError("");
   }
 
