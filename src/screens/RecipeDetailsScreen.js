@@ -53,7 +53,12 @@ function RecipeDetailsScreen({ match }) {
       <h1>RecipeDetailsScreen</h1>
       {success && (
         <Container>
-          <h1>{recipe.name}</h1>
+          <h1>
+            {
+              // @ts-ignore
+              recipe.name
+            }
+          </h1>
           <Table striped bordered hover responsive className='my-3'>
             <thead>
               <tr>
@@ -61,11 +66,14 @@ function RecipeDetailsScreen({ match }) {
               </tr>
             </thead>
             <tbody>
-              {recipe["ingredients"].map((ingredient, index) => (
-                <tr key={index}>
-                  <td>{ingredient}</td>
-                </tr>
-              ))}
+              {
+                // @ts-ignore
+                recipe["ingredients"].map((ingredient, index) => (
+                  <tr key={index}>
+                    <td>{ingredient}</td>
+                  </tr>
+                ))
+              }
             </tbody>
           </Table>
         </Container>

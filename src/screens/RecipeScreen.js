@@ -8,6 +8,7 @@ function HomeScreen() {
   const [error, setError] = useState("");
   const refreshToken = JSON.parse(localStorage.getItem("refresh"));
   const accessToken = JSON.parse(localStorage.getItem("access"));
+  const expireTime = JSON.parse(localStorage.getItem("exp"));
 
   async function fetchRecipes() {
     const config = {
@@ -35,6 +36,7 @@ function HomeScreen() {
       config
     );
     localStorage.setItem("access", JSON.stringify(data["access"]));
+    localStorage.setItem("exp", JSON.stringify(data["exp"]));
     setError("");
   }
 
@@ -76,6 +78,8 @@ function HomeScreen() {
       <p>Refresh: {refreshToken}</p>
 
       <p>Access: {accessToken}</p>
+
+      <p>Expire: {expireTime} sec. </p>
     </div>
   );
 }
