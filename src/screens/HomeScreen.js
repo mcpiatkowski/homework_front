@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import axios from "axios";
 
-function HomeScreen() {
+function HomeScreen({ history }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [success, setSuccess] = useState(false);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -23,9 +24,17 @@ function HomeScreen() {
 
       localStorage.setItem("access", JSON.stringify(data["access"]));
       localStorage.setItem("refresh", JSON.stringify(data["refresh"]));
+      setSuccess(true);
     }
     fetchToken();
   };
+
+  useEffect(() => {
+    if (success) {
+      history.push("/recipes/");
+    }
+  }, [success]);
+
   return (
     <div>
       <h1>Welcome!</h1>
